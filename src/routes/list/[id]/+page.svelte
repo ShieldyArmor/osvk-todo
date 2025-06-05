@@ -24,10 +24,10 @@
   async function addItem() {
     const text = newItemText.trim();
     if (!text) return;
-    // Add new item locally
+
     list.items = [...list.items, { text, completed: false }];
     newItemText = "";
-    // Send updated list to backend
+
     const res = await fetch(`/api/list/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -44,9 +44,9 @@
   }
 
   async function deleteItem(index) {
-    // Remove item locally
+
     list.items = list.items.filter((_, i) => i !== index);
-    // Send updated list to backend
+
     const res = await fetch(`/api/list/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -59,6 +59,34 @@
       }
     } else {
       alert('Failed to delete item');
+    }
+  }
+
+  function moveItemUp(index) {
+    if (index === 0) return;
+    [list.items[index - 1], list.items[index]] = [list.items[index], list.items[index - 1]];
+    updateList();
+  }
+
+  function moveItemDown(index) {
+    if (index === list.items.length - 1) return;
+    [list.items[index + 1], list.items[index]] = [list.items[index], list.items[index + 1]];
+    updateList();
+  }
+
+  async function updateList() {
+    const res = await fetch(`/api/list/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(list)
+    });
+    if (res.ok) {
+      const updated = await fetch(`/api/list/${id}`);
+      if (updated.ok) {
+        list = await updated.json();
+      }
+    } else {
+      alert('Failed to update list');
     }
   }
 
@@ -84,15 +112,18 @@
     <button type="submit" disabled={!newItemText.trim()}>Add</button>
   </form>
   {#if list && list.items && list.items.length > 0}
-    <ul class="task-list">
-      {#each list.items as item, i}
-        <li>
-          <input
-            type="checkbox"
-            checked={item.completed}
-            on:change={() => toggleCompleted(i)}
-          />
-          <span class:completed={item.completed}>{item.text}</span>
+  <ul class="task-list">
+    {#each list.items as item, i}
+      <li>
+        <input
+          type="checkbox"
+          checked={item.completed}
+          on:change={() => toggleCompleted(i)}
+        />
+        <span class:completed={item.completed}>{item.text}</span>
+        <div class="actions">
+          <button class="move-btn" title="Move up" on:click={() => moveItemUp(i)} aria-label="Move up" type="button">&#8593;</button>
+          <button class="move-btn" title="Move down" on:click={() => moveItemDown(i)} aria-label="Move down" type="button">&#8595;</button>
           <button
             class="delete-btn"
             title="Delete"
@@ -100,9 +131,10 @@
             aria-label="Delete item"
             type="button"
           >&#10005;</button>
-        </li>
-      {/each}
-    </ul>
+        </div>
+      </li>
+    {/each}
+  </ul>
   {:else}
     <p>No tasks in this list.</p>
   {/if}
@@ -180,18 +212,48 @@
     text-decoration: line-through;
     color: #888;
   }
-  .delete-btn {
+  .actions {
     margin-left: auto;
+    display: flex;
+    gap: 0.25em;
+    align-items: center;
+  }
+  .move-btn {
     background: none;
     border: none;
     color: #bbb;
-    font-size: 1.2em;
+    font-size: 1.4em;
     cursor: pointer;
-    transition: color 0.2s;
-    padding: 0 0.5em;
-    line-height: 1;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .move-btn:hover {
+    color: #007bff;
+    background: #e6f0ff;
+  }
+  .delete-btn {
+    background: none;
+    border: none;
+    color: #bbb;
+    font-size: 1.4em;
+    cursor: pointer;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.2em;
   }
   .delete-btn:hover {
     color: #e74c3c;
+    background: #ffeaea;
   }
+
 </style>
