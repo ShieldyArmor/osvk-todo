@@ -1,0 +1,48 @@
+{
+  "lists": {
+    "shopping": {
+      "name": "Shopping List",
+      "created": 1717412400000,
+      "items": [
+        {
+          "text": "Milk",
+          "completed": false
+        },
+        {
+          "text": "Eggs",
+          "completed": false
+        }
+      ]
+    },
+    "todo": {
+      "id": "todo",
+      "name": "To-Do List",
+      "created": 1717495200000,
+      "items": [
+        {
+          "text": "Walk the dog",
+          "completed": true
+        },
+        {
+          "text": "be the goat",
+          "completed": false
+        }
+      ]
+    },
+    "list_1749042740803": {
+      "id": "list_1749042740803",
+      "name": "Iron man suit",
+      "created": 1749042740803,
+      "items": [
+        {
+          "text": "Ask gulliver",
+          "completed": true
+        },
+        {
+          "text": "Ask Laszlo",
+          "completed": true
+        }
+      ]
+    }
+  }
+}

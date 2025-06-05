@@ -1,0 +1,33 @@
+{
+  "lists": {
+    "shopping": {
+      "name": "Shopping List",
+      "created": 1717412400000,
+      "items": [
+        {
+          "text": "Milk",
+          "completed": false
+        },
+        {
+          "text": "Eggs",
+          "completed": false
+        }
+      ]
+    },
+    "todo": {
+      "id": "todo",
+      "name": "To-Do List",
+      "created": 1717495200000,
+      "items": [
+        {
+          "text": "Walk the dog",
+          "completed": true
+        },
+        {
+          "text": "be the goat",
+          "completed": false
+        }
+      ]
+    }
+  }
+}

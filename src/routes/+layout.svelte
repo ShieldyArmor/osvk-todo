@@ -34,8 +34,8 @@
         min-height: 50px;
         height: 9vh;
         max-height: 75px;
-        border-bottom: 5px;
-        border-color: black;
+        border-bottom: 3px;
+        border-color: #ccc;
         border-style: solid;
         background-color: #f8f9fa;
     }
